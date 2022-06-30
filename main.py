@@ -2,6 +2,9 @@ import os
 import time
 import torch
 import argparse
+import sys
+
+# sys.argv = ['-f']
 
 from model import SASRec
 from utils import *
@@ -30,6 +33,9 @@ parser.add_argument('--state_dict_path', default=None, type=str)
 args = parser.parse_args()
 if not os.path.isdir(args.dataset + '_' + args.train_dir):
     os.makedirs(args.dataset + '_' + args.train_dir)
+
+# print('args:',args)
+
 with open(os.path.join(args.dataset + '_' + args.train_dir, 'args.txt'), 'w') as f:
     f.write('\n'.join([str(k) + ',' + str(v) for k, v in sorted(vars(args).items(), key=lambda x: x[0])]))
 f.close()
@@ -86,6 +92,8 @@ if __name__ == '__main__':
     
     T = 0.0
     t0 = time.time()
+
+    epoch_start_idx = 1
     
     for epoch in range(epoch_start_idx, args.num_epochs + 1):
         if args.inference_only: break # just to decrease identition
